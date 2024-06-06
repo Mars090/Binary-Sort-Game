@@ -18,7 +18,7 @@ RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 
 # Font
-FONT = pygame.font.SysFont('Arial', 24)
+FONT = pygame.font.SysFont('Verdana', 24)
 
 # Generate random array
 array_size = 100
@@ -26,6 +26,8 @@ array = [random.randint(1, 100) for _ in range(array_size)]
 sorted_array = array[:]
 
 # Function to display text input prompt
+
+
 def draw_text_input_prompt():
     input_prompt = "Enter the target number:"
     text_surface = FONT.render(input_prompt, True, WHITE)
@@ -33,58 +35,49 @@ def draw_text_input_prompt():
     SCREEN.blit(text_surface, text_rect)
 
 # Function to get user input
+
+
 def get_user_input(array):
     running = True
-    selected_number = None
-
-    unique_numbers = list(set(array))  # Get unique numbers from the array
-    num_options = min(len(unique_numbers), 15)  # Display at most 10 options
+    user_typed_number = ""
 
     while running:
         for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_RETURN:
-                    running = False
-                elif event.key == pygame.K_ESCAPE:
-                    pygame.quit()
-                    exit()
-                elif pygame.K_1 <= event.key <= pygame.K_9:  # Number keys 1 to 9
-                    index = event.key - pygame.K_1
-                    if index < num_options:
-                        selected_number = unique_numbers[index]
-                        running = False
+            if event.type == pygame.QUIT:
+                running = False
+            elif event.type == pygame.KEYDOWN:
+                # Handle number keys 0-9
+                if 48 <= event.key <= 57:  # Convert keycode to ascii value range for numbers
+                    user_typed_number += chr(event.key)
+                elif event.key == pygame.K_RETURN:
+                    # Validate input (check length, range etc.)
+                    if len(user_typed_number) == 2 or len(user_typed_number) == 1 and user_typed_number.isdigit():
+                        return int(user_typed_number)
+                    else:
+                        # Display error message (e.g., "Invalid input. Please enter a two-digit number.")
+                        pass
 
         SCREEN.fill(BLACK)
-        input_prompt = "Select a number from the array:"
-        text_surface = FONT.render(input_prompt, True, WHITE)
-        text_rect = text_surface.get_rect(center=(WIDTH // 2, HEIGHT // 2 - 20))
-        SCREEN.blit(text_surface, text_rect)
+        draw_text_input_prompt()  # Call your function to display input prompt
 
-        # Calculate the total width needed for all options
-        total_width = sum([FONT.size(str(num))[0] + 10 for num in unique_numbers[:num_options]])
-        start_x = (WIDTH - total_width) // 2  # Starting x-coordinate for the options
-
-        option_y = HEIGHT // 2 + 20
-        for num in unique_numbers[:num_options]:
-            option_text = f"{num}"
-            option_surface = FONT.render(option_text, True, WHITE)
-            option_rect = option_surface.get_rect(midleft=(start_x, option_y))
-            SCREEN.blit(option_surface, option_rect)
-            start_x += option_rect.width + 10  # Update start_x for next option
-            option_y += 20
+        # Display current user-typed number
+        number_surface = FONT.render(user_typed_number, True, WHITE)
+        number_rect = number_surface.get_rect(
+            center=(WIDTH // 2, HEIGHT // 2 + 50))
+        SCREEN.blit(number_surface, number_rect)
 
         pygame.display.flip()
 
-    return selected_number
-
-
+    return None
 
 
 def draw_array(array, y_pos, selected_number=None):
     bar_width = WIDTH // len(array)
     for i, val in enumerate(array):
-        color = GREEN if val == selected_number else RED  # Highlight selected column in green
-        pygame.draw.rect(SCREEN, color, (i * bar_width, y_pos, bar_width, val * 5))
+        # Highlight selected column in green
+        color = GREEN if val == selected_number else RED
+        pygame.draw.rect(SCREEN, color, (i * bar_width,
+                         y_pos, bar_width, val * 5))
 
 
 def main():
@@ -117,12 +110,14 @@ def main():
                     if not start_sort:
                         start_sort = True
                         start_time_sort = time.time()
+                        # uses quickSort function from other file
                         quickSort(sorted_array, 0, len(sorted_array) - 1)
                         end_time_sort = time.time()
                         sorted = True
                     elif sorted and not start_search:
                         start_search = True
                         start_time_search = time.time()
+                        # uses binary_search function from other file
                         search_result = binary_search(sorted_array, target)
                         end_time_search = time.time()
                         found = True
@@ -162,6 +157,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-#TO DO
-# - FIND OUT WHY ITS NOT LETTING ME INPUT MORE THAN 1 NUMBER 
