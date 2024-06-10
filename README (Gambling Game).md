@@ -41,3 +41,6 @@ The game ends when points reach zero.
 - `draw_level()`: Displays the current level.
 - `quickSort()`: Function from Binary_Search module to sort the array.
 - `binary_search()`: Function from Binary_Search module to search for the target number.
+
+# NOTE
+This program is run by gambling game.py

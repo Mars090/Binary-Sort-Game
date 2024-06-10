@@ -24,3 +24,7 @@ else:
 # Functions
 - `quickSort(array, low, high)`: Sorts the elements of the array in ascending order using the quicksort algorithm.
 - `binary_search(data, target)`: Searches for the target value within the sorted data array and returns its index if found, otherwise returns -1.
+
+
+# NOTE
+This program is run by BS GUI file
