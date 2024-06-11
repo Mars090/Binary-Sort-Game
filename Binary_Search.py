@@ -1,4 +1,4 @@
-# Binary_Search.py
+#this is the main file that the two other files take the Binary Search and the QuickSort out of
 
 # Quicksort functions
 def partition(array, low, high):
